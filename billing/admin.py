@@ -22,3 +22,14 @@ class InvoiceAdmin(admin.ModelAdmin):
         "payment_method",
         "payment_status",
     )
+
+
+@admin.register(InvoiceItem)
+class InvoiceItemAdmin(admin.ModelAdmin):
+    list_display = (
+        "invoice",
+        "medicine",
+        "batch",
+        "unit_price",
+        "quantity",
+    )

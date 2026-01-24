@@ -24,7 +24,11 @@ class Invoice(models.Model):
     PAYMENT_STATUS_CHOICES = [("PAID", "Paid"), ("UNPAID", "Unpaid")]
     invoice_number = models.CharField(max_length=20, unique=True)
     customer = models.ForeignKey(
-        Customer, on_delete=models.PROTECT, related_name="invoices"
+        Customer,
+        on_delete=models.PROTECT,
+        related_name="invoices",
+        null=True,
+        blank=True,
     )
     created_by = models.ForeignKey(Staff, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -34,18 +38,21 @@ class Invoice(models.Model):
     payment_status = models.CharField(
         max_length=30, choices=PAYMENT_STATUS_CHOICES, default="UNPAID"
     )
+    total_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    gst_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    grand_total = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
-    @property
-    def total(self):
-        return sum(item.item_total for item in self.items.all())
+    # @property
+    # def total(self):
+    #     return sum(item.item_total for item in self.items.all())
 
-    @property
-    def gst(self):
-        return sum(item.gst_amount for item in self.items.all())
+    # @property
+    # def gst(self):
+    #     return sum(item.gst_amount for item in self.items.all())
 
-    @property
-    def grandtotal(self):
-        return self.total + self.gst
+    # @property
+    # def grandtotal(self):
+    #     return self.total + self.gst
 
 
 class InvoiceItem(models.Model):
@@ -54,15 +61,24 @@ class InvoiceItem(models.Model):
     batch = models.ForeignKey(Batch, on_delete=models.PROTECT)
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField()
+    gst_percent = models.DecimalField(
+        max_digits=5, decimal_places=2, default=0
+    )  # Tax % at moment of sale
+    gst_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0
+    )  # Calculated Tax amount
+    total_amount = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0
+    )  # Final line total
 
-    @property
-    def item_total(self):
-        return self.unit_price * self.quantity
+    # @property
+    # def item_total(self):
+    #     return self.unit_price * self.quantity
 
-    @property
-    def gst_amount(self):
-        return (self.item_total * self.medicine.gst_percent) / Decimal(100)
+    # @property
+    # def gst_amount(self):
+    #     return (self.item_total * self.medicine.gst_percent) / Decimal(100)
 
-    @property
-    def grand_item_total(self):
-        return self.item_total + self.gst_amount
+    # @property
+    # def grand_item_total(self):
+    #     return self.item_total + self.gst_amount
