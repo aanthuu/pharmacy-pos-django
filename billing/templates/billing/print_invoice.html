@@ -1,0 +1,35 @@
+{# templates/billing/print_invoice.html #}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Invoice {{ invoice.invoice_number }}</title>
+  <style>
+    /* print-friendly styles */
+    body { font-family: Arial, sans-serif; }
+  </style>
+</head>
+<body onload="window.print()">
+  <h2>PharmaFlow Pharmacy</h2>
+  <div>Invoice: {{ invoice.invoice_number }}</div>
+  <div>Date: {{ invoice.created_on|date:'Y-m-d H:i' }}</div>
+  <table>
+    <thead><tr><th>Item</th><th>Qty</th><th>MRP</th><th>GST</th><th>Total</th></tr></thead>
+    <tbody>
+      {% for it in items %}
+        <tr>
+          <td>{{ it.medicine.name }}</td>
+          <td>{{ it.quantity }}</td>
+          <td>{{ it.unit_price|floatformat:2 }}</td>
+          <td>{{ it.gst_percent|floatformat:2 }}</td>
+          <td>{{ it.total_amount|floatformat:2 }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div>Subtotal: ₹{{ invoice.total_amount|floatformat:2 }}</div>
+  <div>GST: ₹{{ invoice.gst_amount|floatformat:2 }}</div>
+  <div><strong>Grand Total: ₹{{ invoice.grand_total|floatformat:2 }}</strong></div>
+</body>
+</html>

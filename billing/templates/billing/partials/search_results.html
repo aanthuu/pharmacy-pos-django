@@ -1,0 +1,38 @@
+{% if batches %}
+    <div class="dropdown-list">
+        {% for batch in batches %}
+        <div class="dropdown-item {% if batch.is_soonest_expiry %}recommended{% endif %}"
+             hx-post="{% url 'add_to_cart' %}"
+             hx-vals='{"batch_id": "{{ batch.id }}"}'
+             hx-target="#cart-area"
+             hx-on::after-request="document.getElementById('search-input').value=''; document.getElementById('search-results').innerHTML='';"
+        >
+            <div class="d-flex flex-column">
+                <div class="medicine-name">
+                    {{ batch.medicine.name }}
+                    {% if batch.is_soonest_expiry %}
+                        <span class="badge-recommended">★ Best</span>
+                    {% endif %}
+                </div>
+                <div class="medicine-meta">
+                    <span>Batch: {{ batch.batch_number }}</span>
+                    <span class="meta-separator">•</span>
+                    <span>Exp: {{ batch.expiration_date|date:"M Y" }}</span>
+                    <span class="meta-separator">•</span>
+                    <span>Stock: {{ batch.current_quantity }}</span>
+                </div>
+            </div>
+
+            <div class="medicine-price">
+                ₹{{ batch.sale_price|floatformat:2 }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% elif request.GET.search %}
+    <div class="dropdown-list">
+        <div class="no-result">
+            No medicine found.
+        </div>
+    </div>
+{% endif %}

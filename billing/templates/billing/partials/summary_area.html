@@ -1,0 +1,56 @@
+<form method="POST" 
+      action="{% url 'checkout' %}" 
+      hx-post="{% url 'checkout' %}" 
+      hx-target="#popup-container" 
+      hx-swap="innerHTML">
+    
+    {% csrf_token %}
+    
+    <div class="summary-body">
+        
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <span>₹{{ subtotal|floatformat:2 }}</span>
+        </div>
+        
+        <div class="summary-row">
+            <span>GST</span>
+            <span>₹{{ tax_total|floatformat:2 }}</span>
+        </div>
+
+        <div class="summary-total">
+            <span>Total</span>
+            <span class="total-amount">₹{{ grand_total|floatformat:2 }}</span>
+        </div>
+
+        <span class="payment-label">Payment Mode</span>
+        <div class="payment-modes">
+            <div class="mode-option">
+                <input type="radio" name="payment_mode" id="pay_cash" value="CASH" checked>
+                <label for="pay_cash">CASH</label>
+            </div>
+            
+            <div class="mode-option">
+                <input type="radio" name="payment_mode" id="pay_upi" value="UPI">
+                <label for="pay_upi">UPI</label>
+            </div>
+            
+            <div class="mode-option">
+                <input type="radio" name="payment_mode" id="pay_card" value="CARD">
+                <label for="pay_card">CARD</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-checkout">
+            Process Checkout
+        </button>
+        
+        <button type="button" 
+                class="btn-clear"
+                hx-post="{% url 'clear_cart' %}" 
+                hx-target="#cart-area" 
+                hx-swap="outerHTML">
+            Clear Cart
+        </button>
+    </div>
+</form>

@@ -1,0 +1,120 @@
+{# templates/billing/partials/invoice_popup.html #}
+
+<div id="invoice-modal" class="invoice-modal" style="display: block;">
+  
+  <div class="invoice-modal-overlay"></div>
+
+  <div class="invoice-modal-content" role="dialog" aria-modal="true">
+    <div class="invoice-header">
+      <div class="invoice-success-icon">✔</div>
+      <div class="invoice-company">
+        <h3>PharmaFlow Pharmacy</h3>
+        <p>252 Periour Road, Your City</p>
+      </div>
+      <button class="invoice-close" onclick="window.location.reload()">✕</button>
+    </div>
+
+    <div class="invoice-body">
+      <div class="invoice-info">
+        <strong>Invoice #{{ invoice.invoice_number }}</strong><br/>
+        Date: {{ invoice.created_at|date:"Y-m-d" }}<br/>
+        Customer: {{ invoice.customer.name|default:"Walking Customer" }}
+      </div>
+
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>Item</th><th>Qty</th><th>MRP</th><th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for it in items %}
+          <tr>
+            <td>{{ it.medicine.name }}</td>
+            <td>{{ it.quantity }}</td>
+            <td>{{ it.unit_price|floatformat:2 }}</td>
+            <td>{{ it.total_amount|floatformat:2 }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="invoice-totals">
+        <div>Subtotal: ₹{{ invoice.total_amount|floatformat:2 }}</div>
+        <div>GST: ₹{{ invoice.gst_amount|floatformat:2 }}</div>
+        <div style="font-size: 1.2em; margin-top: 10px;">
+            <strong>Grand Total: ₹{{ invoice.grand_total|floatformat:2 }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="invoice-actions">
+      <a class="btn btn-print" href="{% url 'print_invoice' invoice.id %}" target="_blank">Print Invoice</a>
+      <button class="btn btn-new-sale" onclick="window.location.reload()">New Sale</button>
+    </div>
+  </div>
+
+  <style>
+    #invoice-modal { 
+      /* Force it to look at the browser window, not the parent div */
+      position: fixed !important; 
+      top: 0 !important; 
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 99999 !important; /* Higher than everything else */
+      
+      /* Flex centering */
+      display: flex !important; 
+      align-items: center !important; 
+      justify-content: center !important;
+      
+      /* Reset any margins that might be pushing it */
+      margin: 0 !important;
+      padding: 0 !important;
+  }
+
+  .invoice-modal-overlay { 
+      position: absolute; 
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 1; 
+  }
+
+  .invoice-modal-content { 
+      position: relative;
+      z-index: 2; /* Sit on top of overlay */
+      background: white; 
+      width: 500px;
+      max-width: 90%;
+      padding: 30px; 
+      border-radius: 12px; 
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); 
+      
+      /* Reset any inherits */
+      text-align: left;
+      margin: auto;
+  }
+  
+  @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+  }
+
+  /* Basic Button Styles if not in your CSS */
+  .invoice-actions { margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end; }
+  .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; font-weight: bold; }
+  .btn-print { background: #333; color: #fff; }
+  .btn-new-sale { background: #28a745; color: #fff; }
+  .invoice-table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9em; }
+  .invoice-table th { text-align: left; border-bottom: 2px solid #eee; padding: 8px; }
+  .invoice-table td { border-bottom: 1px solid #eee; padding: 8px; }
+  .invoice-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+  .invoice-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+
+  </style>
+</div>

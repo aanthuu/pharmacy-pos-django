@@ -1,0 +1,164 @@
+/* =========================================
+   CART AREA STYLING
+   ========================================= */
+
+/* --- The Table Container --- */
+.cart-table {
+    width: 100%;
+    border-collapse: separate; /* Allows for border-radius */
+    border-spacing: 0;
+    margin-top: 10px;
+    font-family: inherit; /* Inherits page font */
+    font-size: 0.95rem;
+}
+
+/* --- Table Header --- */
+.cart-table thead th {
+    background-color: #f8fafc; /* Light Grey Header */
+    color: #64748b;            /* Slate Text */
+    font-weight: 700;
+    font-size: 0.75rem;        /* Small Caps style */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 16px;
+    border-bottom: 2px solid #e2e8f0;
+    text-align: left;
+}
+
+/* First header rounded corner */
+.cart-table thead th:first-child {
+    border-top-left-radius: 8px;
+}
+/* Last header rounded corner */
+.cart-table thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* --- Table Rows & Cells --- */
+.cart-table tbody td {
+    padding: 14px 16px;
+    color: #334155; /* Dark readable text */
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+    transition: background-color 0.1s ease;
+}
+
+/* Row Hover Effect */
+.cart-table tbody tr:hover td {
+    background-color: #f8fafc; /* Very subtle highlight */
+}
+
+/* Last Row: Remove bottom border */
+.cart-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* --- Specific Columns --- */
+/* Make Item Name Bold */
+.cart-table td:first-child {
+    font-weight: 600;
+    color: #0f2a44; /* Sidebar Blue */
+}
+
+/* Make Total Price Green/Bold */
+.cart-table td:nth-last-child(2) {
+    font-weight: 700;
+    color: #059669; /* Emerald Green */
+}
+
+/* =========================================
+   QUANTITY CONTROLS (+ 1 -)
+   ========================================= */
+.qty-cell {
+    width: 120px; /* Fixed width prevents jumping */
+}
+
+.qty-group {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+/* The + and - Buttons */
+.qty-btn {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background: #f1f5f9;
+    border: none;
+    border-radius: 4px;
+    color: #475569;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.qty-btn:hover {
+    background: #0f2a44; /* Sidebar Blue */
+    color: white;
+}
+
+/* The Number in the middle */
+.qty-value {
+    min-width: 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #0f2a44;
+}
+
+/* =========================================
+   ACTION COLUMN (Delete Button)
+   ========================================= */
+.action-cell {
+    text-align: center;
+    width: 60px;
+}
+
+/* Delete Button Styling */
+.btn-delete {
+    background: #fef2f2; /* Light Red bg */
+    color: #ef4444;      /* Red icon */
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-delete:hover {
+    background: #ef4444;
+    color: white;
+    border-color: #ef4444;
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+/* =========================================
+   EMPTY CART STATE
+   ========================================= */
+.cart-empty {
+    margin-top: 20px;
+    padding: 40px;
+    text-align: center;
+    
+    background-color: #f8fafc;
+    border: 2px dashed #cbd5e1; /* Dashed Border */
+    border-radius: 12px;
+    
+    color: #64748b;
+    font-weight: 500;
+    font-size: 0.95rem;
+}

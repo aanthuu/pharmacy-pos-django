@@ -1,0 +1,62 @@
+{% if customers %}
+
+<div class="list-group mt-2" style="max-height: 300px; overflow-y: auto;">
+
+    {% for customer in customers %}
+
+    <div class="d-flex justify-content-between align-items-center p-3 border-bottom result-row"
+         style="transition: background 0.2s;"
+         onmouseover="this.style.backgroundColor='#f1f5f9'"
+         onmouseout="this.style.backgroundColor='#fff'">
+
+        <!-- Customer Info -->
+        <div>
+            <h6 class="mb-0 fw-bold text-dark">{{ customer.name }}</h6>
+            <small class="text-muted">
+                📱 {{ customer.phone_number }}
+            </small>
+        </div>
+
+        <!-- ✅ ONLY BUTTON HAS HTMX -->
+        <button
+            class="btn btn-sm btn-primary rounded-pill px-3"
+
+            hx-post="{% url 'select_customer' customer.id %}"
+            hx-target="#customer-section"
+            hx-swap="outerHTML"
+
+            hx-on="htmx:afterRequest: document.getElementById('customerModal').remove()"
+        >
+            Select
+        </button>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+{% if request.GET.q|length >= 1 %}
+
+<div class="text-center py-4">
+
+    <div style="font-size: 2rem; margin-bottom: 10px;">🤷‍♂️</div>
+
+    <p class="text-muted mb-3">
+        No customer found for "<strong>{{ request.GET.q }}</strong>"
+    </p>
+
+    <button
+        type="button"
+        class="btn btn-sm btn-outline-primary rounded-pill px-4"
+        onclick="document.getElementById('add-tab-link').click()"
+    >
+        + Create New Customer
+    </button>
+
+</div>
+
+{% endif %}
+{% endif %}

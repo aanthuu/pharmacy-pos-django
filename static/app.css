@@ -1,0 +1,163 @@
+/* Minimal POS skeleton CSS - flexible layout (few rules) */
+
+:root{
+  --sidebar-w: 220px;
+  --accent: #2563eb;
+  --muted: #708090;
+  --bg: #f6f8fb;
+  --card-bg: #fff;
+  --text: #102a43;
+  --radius: 8px;
+  --gap: 16px;
+}
+
+* { box-sizing: border-box; }
+body{ margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg); color:var(--text); }
+
+/* overall layout */
+.app{ display:flex; min-height:100vh; }
+
+/* sidebar */
+:root {
+  --sidebar-w: 180px; /* Compact width */
+  --sidebar-bg: #0f2a44;
+  --sidebar-text: #ffffff;
+  --sidebar-accent: #2b67b8;
+  --sidebar-hover: rgba(255, 255, 255, 0.08);
+  --sidebar-font: "Segoe UI", Roboto, sans-serif;
+}
+
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: var(--sidebar-font);
+  min-height: 100vh;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #f0f0f0;
+}
+
+.logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: var(--sidebar-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu-item {
+  color: rgba(255, 255, 255, 0.95);
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-item:hover {
+  background: var(--sidebar-hover);
+}
+
+.menu-item.active {
+  background: var(--sidebar-hover);
+  font-weight: 600;
+}
+
+
+/* responsive: stack columns on small screens */
+@media (max-width:980px){
+  .app{ flex-direction:column; }
+  .sidebar{ width:100%; flex-direction:row; align-items:center; justify-content:space-between; padding:10px 12px; }
+  .main{ flex-direction:column; padding:12px; }
+  .right{ width:100%; }
+}
+
+/* Wrapper for Header + Main Area */
+.content {
+    flex: 1; /* Takes up remaining width next to sidebar */
+    display: flex;
+    flex-direction: column; /* Stacks Header on top of Main */
+    background: var(--bg);
+    min-width: 0; /* Prevents overflow issues */
+    height: 100vh; /* Full height */
+    overflow-y: auto; /* Allow scrolling inside content if needed */
+}
+
+/* =========================================
+   HEADER STYLING
+   ========================================= */
+.header {
+    height: 60px;
+    flex-shrink: 0; /* Prevents header from shrinking */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    z-index: 10;
+}
+
+/* Brand Name (Left) */
+.header-left {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f2a44; /* Matches your Sidebar Navy */
+    letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* User Profile (Right) */
+.header-right {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    
+    padding: 6px 14px;
+    background: #f1f5f9;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Green 'Online' Dot */
+.header-right::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}

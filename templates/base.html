@@ -1,0 +1,46 @@
+{% load static  %}
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static "app.css"%}">
+  {% block css %}{% endblock %}
+</head>
+<body>
+  <div class="app">
+
+    <!-- Sidebar (persistent) -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">P</div>
+        <div class="brand-text">PharmaFlow</div>
+      </div>
+
+      <nav class="menu">
+        <a class="menu-item active" href="#">Dashboard</a>
+        <a class="menu-item" href="{% url "pos"%}">POS Billing</a>
+        <a class="menu-item" href="#">Inventory</a>
+        <a class="menu-item" href="#">Customers</a>
+        <a class="menu-item" href="#">Reports</a>
+      </nav>
+    </aside>
+
+    <!-- Content wrapper -->
+    <div class="content">
+
+      <!-- Header (persistent) -->
+      <header class="header">
+        <div class="header-left">PharmaFlow Billing System</div>
+        <div class="header-right">Admin User</div>
+      </header>
+
+      {% block content %}{% endblock %}
+
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<div id="customerModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title">Customer Management</h5>
+        <button type="button" class="btn-close" onclick="document.getElementById('customerModal').remove()"></button>
+      </div>
+
+      <div class="modal-body">
+        
+        <ul class="nav nav-pills mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" id="search-tab-link" href="#" onclick="toggleTab('search')">Search</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="add-tab-link" href="#" onclick="toggleTab('add')">+ Add New</a>
+            </li>
+        </ul>
+
+        <div id="search-area">
+            <div class="input-group">
+                <span class="input-group-text">🔍</span>
+                <input type="text" 
+                       name="q"
+                       class="form-control" 
+                       placeholder="Start typing name or phone..."
+                       hx-get="{% url 'search_customer' %}"
+                       hx-trigger="keyup changed delay:250ms"
+                       hx-target="#customer-search-results"
+                       autocomplete="off"
+                       autofocus>
+            </div>
+            
+            <div id="customer-search-results"></div>
+        </div>
+
+        <div id="add-form" style="display: none;">
+            
+            <div id="form-errors"></div>
+
+            <form hx-post="{% url 'create_customer' %}" 
+                  hx-target="#form-errors">
+                
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label>Customer Name *</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Mobile Number *</label>
+                    <input type="text" name="phone" class="form-control" required>
+                </div>
+                <div class="mb-4">
+                    <label>Email (Optional)</label>
+                    <input type="email" name="email" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Save & Select</button>
+            </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function toggleTab(tab) {
+        // (Keep your existing toggle script here)
+        if(tab === 'search') {
+            document.getElementById('search-area').style.display = 'block';
+            document.getElementById('add-form').style.display = 'none';
+            document.getElementById('search-tab-link').classList.add('active');
+            document.getElementById('add-tab-link').classList.remove('active');
+        } else {
+            document.getElementById('search-area').style.display = 'none';
+            document.getElementById('add-form').style.display = 'block';
+            document.getElementById('search-tab-link').classList.remove('active');
+            document.getElementById('add-tab-link').classList.add('active');
+        }
+    }
+</script>

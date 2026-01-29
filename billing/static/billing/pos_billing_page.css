@@ -1,0 +1,601 @@
+/* main content area */
+.content{ flex:1; display:flex; flex-direction:column; }
+
+/* header */
+.header{ height:60px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; border-bottom:1px solid rgba(15,20,25,0.05); background:transparent; }
+
+/* main area grid */
+.main{ display:flex; gap:var(--gap); padding:20px; align-items:start; }
+
+/* left and right columns */
+.left{ flex:1; display:flex; flex-direction:column; gap:6px; min-width:0; }
+.right{ width:200px; }
+
+/* card */
+.card{ background:var(--card-bg); border-radius:var(--radius); padding:14px; box-shadow:0 6px 18px rgba(12,18,28,0.06); border:1px solid rgba(10,20,30,0.04); }
+.card-title{ font-weight:700; margin-bottom:10px; font-size:15px; }
+
+/* search row */
+.search-row{ display:flex; gap:8px; }
+.search-input{ flex:1; padding:10px 12px; border-radius:8px; border:1px solid #e6eef8; background:#fff; }
+.btn{ padding:8px 10px; border-radius:8px; border:1px solid #dbe8ff; background:#fff; cursor:pointer; font-weight:700; }
+.btn.small{ padding:8px 10px; font-size:13px; }
+.btn.primary{ background:var(--accent); color:#fff; border:none; }
+.btn.full{ width:100%; }
+
+/* cart area */
+.cart-area{ min-height:160px; padding:12px; border-radius:6px; border:1px dashed rgba(10,20,30,0.03); display:flex; align-items:center; justify-content:center; color:var(--muted); }
+.cart-empty{ text-align:center; }
+
+/* .summary card rows
+.summary-row{ display:flex; justify-content:space-between; padding:10px 0; color:var(--muted); border-bottom:1px solid rgba(10,20,30,0.03); }
+.summary-total{ display:flex; justify-content:space-between; padding:12px 0; font-weight:800; font-size:18px; color:var(--accent); }
+
+/* payment controls */
+/* .payment-controls{ margin-top:12px; display:flex; flex-direction:column; gap:8px; }
+.pay-buttons{ display:flex; gap:8px; }
+.link{ background:transparent; color:var(--muted); border:1px solid transparent; } */ */
+
+/* =========================================
+   BILLING SUMMARY (The "Perfect" Look)
+   ========================================= */
+
+/* --- 1. The Card Container --- */
+.right .card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    padding: 24px; /* Spacious padding */
+    position: sticky;
+    top: 20px;
+}
+
+/* Optional: If you have a header inside the card */
+.right .card h5 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+/* --- 2. Summary Rows (Subtotal & GST) --- */
+.summary-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    color: #64748b; /* Slate Grey */
+}
+
+.summary-row span:last-child {
+    font-weight: 600;
+    color: #334155; /* Darker Slate */
+    font-variant-numeric: tabular-nums; /* Aligns numbers */
+}
+
+/* --- 3. The Grand Total --- */
+/* --- 3. The Grand Total (Fixed Alignment & Style) --- */
+.summary-total {
+    display: flex;
+    justify-content: space-between; /* Pushes Label left, Amount right */
+    align-items: center;            /* Vertically centers them exactly */
+    
+    margin-top: 12px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;  /* Solid clean divider */
+    
+    color: #0f2a44; /* Matches Navbar Color */
+}
+
+/* The Label "Total" */
+.summary-total span:first-child {
+    font-size: 1.1rem;     /* Bigger than subtotal (which is 0.95rem) */
+    font-weight: 700;      /* "Stickiness" (Bold) */
+    letter-spacing: 0.5px;
+}
+
+/* The Amount (Price) */
+.summary-total .total-amount {
+    /* 1. Use the exact same number style as Subtotal */
+    font-family: inherit; 
+    font-variant-numeric: tabular-nums; 
+    
+    /* 2. Styling Tweaks */
+    font-size: 1.1rem;     /* Bigger than subtotal, but not huge */
+    font-weight: 700;      /* Bold matching the label */
+    color: #0f2a44;        /* Navbar Color */
+    
+    /* 3. Alignment Safety */
+    text-align: right;
+    line-height: 1;
+}
+
+/* --- 4. Payment Mode Label --- */
+.payment-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #94a3b8; /* Light Grey uppercase label */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* --- 5. Payment Mode Tiles --- */
+.payment-modes {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* 3 Equal columns */
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.mode-option {
+    position: relative;
+}
+
+/* Hide the radio circle */
+.mode-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The Button Styling */
+.mode-option label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0;
+    
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hover State */
+.mode-option label:hover {
+    border-color: #0f2a44;
+    background: #f8fafc;
+}
+
+/* Active / Selected State (Dark Navy Block) */
+.mode-option input[type="radio"]:checked + label {
+    background-color: #0f2a44; /* Brand Navy */
+    color: #ffffff;            /* White Text */
+    border-color: #0f2a44;
+    box-shadow: 0 4px 6px rgba(15, 42, 68, 0.2);
+}
+
+/* --- 6. Action Buttons --- */
+.btn-checkout {
+    width: 100%;
+    padding: 14px;
+    
+    background-color: #0f2a44; /* Brand Navy */
+    border: none;
+    border-radius: 8px;
+    
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.2s;
+    box-shadow: 0 4px 10px rgba(15, 42, 68, 0.2);
+}
+
+.btn-checkout:hover {
+    background-color: #1e3a5f; /* Slightly lighter on hover */
+    transform: translateY(-1px);
+}
+
+.btn-clear {
+    width: 100%;
+    margin-top: 12px;
+    background: transparent;
+    border: none;
+    
+    color: #ef4444; /* Red Text */
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-clear:hover {
+    color: #dc2626; /* Darker Red */
+    text-decoration: underline;
+}
+/* =========================================
+   1. VARIABLES & THEME (Matches Sidebar)
+   ========================================= */
+:root {
+    --brand-color: #1e293b; /* Dark Navy (Sidebar Color) */
+    --brand-hover: #0f172a; /* Darker Navy for hover */
+    --accent-blue: #3b82f6; /* Brighter blue for focus rings only */
+    --text-dark: #334155;
+    --text-light: #64748b;
+    --bg-light: #f1f5f9;
+}
+
+/* =========================================
+   2. CUSTOMER MODAL (Popup Backdrop)
+   ========================================= */
+#customerModal {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.65); /* Professional Dark Dim */
+    z-index: 9999;
+    backdrop-filter: blur(2px); /* Modern frosted glass effect */
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* =========================================
+   3. MODAL DIALOG & CONTENT (The White Box)
+   ========================================= */
+#customerModal .modal-dialog {
+    margin: 1rem auto; /* Tighter margin */
+    max-width: 450px;  /* Smaller, more compact width */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#customerModal .modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    background: #fff;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   4. HEADER & TABS
+   ========================================= */
+#customerModal .modal-header {
+    background-color: #fff;
+    padding: 1rem 1.5rem 0.5rem; /* Reduced bottom padding */
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#customerModal .modal-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--brand-color);
+    letter-spacing: -0.025em;
+}
+
+/* Tabs Container */
+#customerModal .nav-pills {
+    display: flex;
+    list-style: none;
+    padding: 4px;
+    margin: 0 1.5rem 1.25rem; /* Side margins match header */
+    background-color: var(--bg-light);
+    border-radius: 8px; /* Tighter radius */
+}
+
+#customerModal .nav-item {
+    flex: 1;
+    text-align: center;
+}
+
+#customerModal .nav-link {
+    display: block;
+    padding: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-light);
+    border-radius: 6px;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+/* Active Tab = Sidebar Color */
+#customerModal .nav-link.active {
+    background-color: white;
+    color: var(--brand-color);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#customerModal .nav-link:hover:not(.active) {
+    color: var(--brand-color);
+}
+
+/* =========================================
+   5. BODY & INPUTS (Search & Form)
+   ========================================= */
+#customerModal .modal-body {
+    padding: 0 1.5rem 1.5rem;
+}
+
+/* Search Bar Container */
+#customerModal .input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    background-color: #fff;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Focus State for Search Bar */
+#customerModal .input-group:focus-within {
+    border-color: var(--brand-color);
+    box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.1); /* Soft sidebar-colored glow */
+}
+
+#customerModal .input-group-text {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    color: var(--text-light);
+    padding-right: 10px;
+}
+
+#customerModal .form-control {
+    border: none;
+    padding: 0;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    width: 100%;
+    outline: none;
+    box-shadow: none;
+}
+
+/* Form Labels */
+#customerModal label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* Standard Inputs (Name, Phone, Email) */
+#customerModal input[type="text"],
+#customerModal input[type="email"] {
+    width: 100%;
+    padding: 10px 12px;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    transition: all 0.2s;
+}
+
+#customerModal input:focus {
+    border-color: var(--brand-color);
+    box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.1);
+    outline: none;
+}
+
+/* =========================================
+   6. BUTTONS & RESULTS
+   ========================================= */
+/* Main Action Button */
+#customerModal .btn-primary {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--brand-color); /* Matches Sidebar */
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background-color 0.2s;
+}
+
+#customerModal .btn-primary:hover {
+    background-color: var(--brand-hover);
+}
+
+/* Close "X" Button */
+#customerModal .btn-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-light);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+
+#customerModal .btn-close:hover {
+    color: var(--brand-color);
+}
+
+/* Search Results List */
+
+
+/* --- SEARCH BAR (Cleaner Look) --- */
+/* --- 1. SEARCH INPUT GROUP (Fixing the alignment) --- */
+#customerModal .input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px; /* Softer roundness */
+    padding: 10px 16px;
+    background-color: #f8fafc; /* Very light grey background */
+    margin-bottom: 1.5rem;
+    transition: all 0.2s ease;
+}
+
+#customerModal .input-group:focus-within {
+    background-color: #fff;
+    border-color: #3b82f6; /* Pharma Blue */
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+#customerModal .input-group-text {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    padding-right: 12px;
+    color: #64748b;
+}
+
+#customerModal .form-control {
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #334155;
+    padding: 0;
+    box-shadow: none;
+}
+
+/* --- 2. RESULTS LIST (Professional Card Style) --- */
+/* Container */
+#customer-search-results {
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+/* Scrollbar */
+#customer-search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+#customer-search-results::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
+}
+
+
+/* Result Row Card */
+.result-row {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 10px;
+
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+
+/* Hover Effect */
+.result-row:hover {
+    background-color: #eff6ff;
+    border-color: #3b82f6;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Customer Name */
+.result-row h6 {
+    margin: 0;
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 0.95rem;
+}
+
+
+/* Phone Number */
+.result-row small {
+    color: #64748b;
+    font-size: 0.85rem;
+
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    margin-top: 6px;
+}
+
+
+/* Select Button */
+.result-row button {
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    padding: 4px 10px;
+
+    border-radius: 999px;
+
+    background-color: #e2e8f0;
+    border: none;
+
+    color: #475569;
+
+    transition: all 0.2s;
+}
+
+
+/* Button Hover */
+.result-row:hover button {
+    background-color: #3b82f6;
+    color: #ffffff;
+}
+
+
+/* Mobile Friendly */
+@media (max-width: 600px) {
+
+    .result-row {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 10px;
+    }
+
+    .result-row button {
+        align-self: flex-end;
+    }
+
+}
+
+
+/* Anchor for the floating dropdown */
+.search-wrapper {
+    position: relative; 
+    z-index: 500;
+}

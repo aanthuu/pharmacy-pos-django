@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}POS — PharmaFlow{% endblock %}
+{% block css%}<link rel="stylesheet" href="{% static "billing/pos_billing_page.css"%}">
+<link rel="stylesheet" href="{% static "billing/partials/search_results.css"%}">
+<link rel="stylesheet" href="{% static "billing/partials/cart_area.css"%}">
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+{% endblock %}
+{% block content %}
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(
+                    cookie.substring(name.length + 1)
+                );
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+document.body.addEventListener('htmx:configRequest', (event) => {
+    event.detail.headers['X-CSRFToken'] = getCookie('csrftoken');
+});
+</script>
+
+<!-- Main area: left = search + cart, right = billing summary -->
+      <main class="main">
+        <section class="left">
+          <!-- Search area -->
+        <div class="card search-card">
+            <div class="card-title">Sale Terminal</div>
+    
+            <div class="search-row" style="display: flex; gap: 10px; align-items: flex-start;">
+        
+                <div class="search-wrapper" style="flex: 1; position: relative;">
+            
+                <input id="search-input" 
+                   class="search-input" 
+                   name="search"
+                   placeholder="Search medicine name or barcode..." 
+                   autocomplete="off"
+                   hx-get="{% url 'search_medicine' %}"
+                   hx-trigger="keyup changed delay:250ms"
+                   hx-target="#search-results"
+                />
+            
+                <div id="search-results"></div>
+            
+            </div>
+
+            <div id="customer-section"
+                hx-get="{% url 'get_customer_section' %}"
+                hx-trigger="load"
+                hx-swap="innerHTML"
+                class="d-flex align-items-center">
+            </div>
+
+        </div>
+        </div>
+          <!-- Cart area -->
+          <div class="card cart-card">
+            <div class="card-title">Current Items <span id="item-count">({{ cart|length }})</span></div>
+            {% include 'billing/partials/cart_area.html' %}
+        </div>
+        </section>
+        <aside class="right">
+            <div class="card p-3">
+                <h5>Billing Summary</h5>
+    
+                <div id="billing-summary-area"
+                    hx-get="{% url 'get_cart_summary' %}"
+                    hx-trigger="update-summary from:body"
+                    hx-swap="innerHTML">
+     
+                    {% include 'billing/partials/summary_area.html' %}
+     
+                </div>
+            </div>
+        </aside>
+      </main>
+
+    <script>
+        document.body.addEventListener('closeModal', function() {
+        // 1. Find the modal
+        var modal = document.getElementById('customerModal');
+        if (modal) {
+            // 2. Fade it out for a smooth effect
+            modal.style.transition = 'opacity 0.2s ease';
+            modal.style.opacity = '0';
+            
+            // 3. Remove it from DOM after 200ms
+            setTimeout(function() {
+                modal.remove();
+                // Optional: Remove the grey backdrop if Bootstrap left it behind
+                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                document.body.classList.remove('modal-open');
+            }, 200);
+            }
+        });
+    </script>
+      <div id="modal-container"></div>
+      <!-- Invoice / Error Popup Area -->
+      <div id="popup-container"></div>
+{% endblock %}
