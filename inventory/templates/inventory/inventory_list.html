@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Inventory | PharmaFlow{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'inventory/inventory.css' %}">
+<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+{% endblock %}
+{% block content %}
+<div class="inventory-wrapper">
+    <div class="page-header">
+        <div class="header-title">
+            <h1>Inventory Management</h1>
+        </div>
+        <div class="header-actions">
+            <a href="#" class="btn-secondary">⬇ Export CSV</a>
+            <a href="#" class="btn-primary">+ Add New Medicine</a>
+        </div>
+    </div>
+    <input type="hidden" name="view_type" id="view_type" value="medicines">
+    <div class="tabs-container">
+        <a class="tab-link active" 
+           hx-get="{% url 'inventory_list' %}?view_type=medicines"
+           hx-target="#inventory-table-area"
+           hx-swap="outerHTML"
+           onclick="updateTab(this, 'medicines')">
+           Medicine List
+        </a>
+        <a class="tab-link" 
+           hx-get="{% url 'inventory_list' %}?view_type=batches"
+           hx-target="#inventory-table-area"
+           hx-swap="outerHTML"
+           onclick="updateTab(this, 'batches')">
+           Batch Records
+        </a>
+        <a class="tab-link" 
+           hx-get="{% url 'inventory_list' %}?view_type=alerts"
+           hx-target="#inventory-table-area"
+           hx-swap="outerHTML"
+           style="color: #dc2626;"
+           onclick="updateTab(this, 'alerts')">
+           Low Stock / Expired
+        </a>
+    </div>
+    <div class="controls-bar">
+        <div class="search-wrapper">
+            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            
+            <input type="text" 
+                   name="search"
+                   class="search-input" 
+                   placeholder="Search..."
+                   hx-get="{% url 'inventory_list' %}"
+                   hx-trigger="keyup changed delay:500ms"
+                   hx-target="#inventory-table-area"
+                   hx-include="[name='view_type'], [name='category'], [name='status']"
+                   hx-swap="outerHTML">
+        </div>
+        <div class="filter-group">
+            <select name="category"
+                    class="filter-select"
+                    hx-get="{% url 'inventory_list' %}"
+                    hx-trigger="change"
+                    hx-target="#inventory-table-area"
+                    hx-include="[name='view_type'], [name='search'], [name='status']"
+                    hx-swap="outerHTML">
+                <option value="">All Categories</option>
+                {% for cat in categories %}
+                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="status" 
+                    class="filter-select"
+                    style="margin-left: 10px;"
+                    hx-get="{% url 'inventory_list' %}"
+                    hx-trigger="change"
+                    hx-target="#inventory-table-area"
+                    hx-include="[name='view_type'], [name='search'], [name='category']"
+                    hx-swap="outerHTML">
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+        </div>
+    </div>
+    {% include "inventory/partials/table_medicines.html" %}
+</div>
+<script>
+    function updateTab(element, viewType) {
+        // 1. Update visual class
+        document.querySelectorAll('.tab-link').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+        
+        // 2. Update hidden input so Filters know which tab is active
+        document.getElementById('view_type').value = viewType;
+    }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. Check if the URL has "?trigger=alerts"
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        if (urlParams.get('trigger') === 'alerts') {
+            // 2. Find the "Low Stock" tab link
+            // We look for the link that calls updateTab(this, 'alerts')
+            const alertsTab = document.querySelector("a[onclick*='alerts']");
+            
+            if (alertsTab) {
+                // 3. Simulate a click on it
+                alertsTab.click();
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,5 +1,4 @@
-{% load static  %}
-
+{% load static %}
 
 <!doctype html>
 <html lang="en">
@@ -7,25 +6,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>{% block title %}{% endblock %}</title>
-  <link rel="stylesheet" href="{% static "app.css"%}">
+  <link rel="stylesheet" href="{% static 'app.css' %}">
   {% block css %}{% endblock %}
 </head>
 <body>
   <div class="app">
 
     <!-- Sidebar (persistent) -->
-    <aside class="sidebar">
+    <aside class="sidebar" role="navigation" aria-label="Main menu">
       <div class="brand">
         <div class="logo">P</div>
         <div class="brand-text">PharmaFlow</div>
       </div>
 
       <nav class="menu">
-        <a class="menu-item active" href="#">Dashboard</a>
-        <a class="menu-item" href="{% url "pos"%}">POS Billing</a>
-        <a class="menu-item" href="#">Inventory</a>
-        <a class="menu-item" href="#">Customers</a>
-        <a class="menu-item" href="#">Reports</a>
+        <a class="menu-item active" href="{% url 'main-dashboard' %}">Dashboard</a>
+        <a class="menu-item" href="{% url 'pos' %}">POS Billing</a>
+        <a class="menu-item" href="{% url 'inventory_list' %}">Inventory</a>
+        <a class="menu-item" href="{% url 'customer_list' %}">Customers</a>
+        <a class="menu-item" href="{% url 'report_dashboard' %}">Reports</a>
       </nav>
     </aside>
 
@@ -34,7 +33,15 @@
 
       <!-- Header (persistent) -->
       <header class="header">
-        <div class="header-left">PharmaFlow Billing System</div>
+        <div class="header-left">
+          <!-- Hamburger button: visually hidden on desktop via CSS -->
+          <button class="sidebar-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <span class="app-title">PharmaFlow Billing System</span>
+        </div>
         <div class="header-right">Admin User</div>
       </header>
 
@@ -42,5 +49,82 @@
 
     </div>
   </div>
+
+  <!-- Core sidebar script (placed before child scripts so it can't be removed by overriding blocks) -->
+  <script>
+  (function () {
+    function initSidebar() {
+      try {
+        const sidebar = document.querySelector('.sidebar');
+        const toggle = document.querySelector('.sidebar-toggle');
+
+        if (!sidebar || !toggle) {
+          // nothing to do if elements not present
+          return;
+        }
+
+        // create a single backdrop element with an id to avoid duplicates
+        let backdrop = document.getElementById('sidebar-backdrop');
+        if (!backdrop) {
+          backdrop = document.createElement('div');
+          backdrop.id = 'sidebar-backdrop';
+          backdrop.className = 'sidebar-backdrop';
+          document.body.appendChild(backdrop);
+        }
+
+        function openSidebar() {
+          sidebar.classList.add('open');
+          document.body.classList.add('sidebar-open');
+          toggle.setAttribute('aria-expanded', 'true');
+          backdrop.classList.add('show');
+        }
+        function closeSidebar() {
+          sidebar.classList.remove('open');
+          document.body.classList.remove('sidebar-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          backdrop.classList.remove('show');
+        }
+
+        toggle.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (sidebar.classList.contains('open')) closeSidebar();
+          else openSidebar();
+        });
+
+        backdrop.addEventListener('click', closeSidebar);
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') closeSidebar();
+        });
+
+        // close on link click for mobile
+        document.querySelectorAll('.menu-item').forEach(link => {
+          link.addEventListener('click', () => {
+            if (window.innerWidth <= 980) closeSidebar();
+          });
+        });
+
+        // ensure proper state on resize
+        window.addEventListener('resize', function () {
+          if (window.innerWidth > 980) {
+            sidebar.classList.remove('open');
+            backdrop.classList.remove('show');
+            toggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+      } catch (err) {
+        console.error('Sidebar init error:', err);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSidebar);
+    } else {
+      initSidebar();
+    }
+  })();
+  </script>
+
+  {% block scripts %}{% endblock %}
 </body>
 </html>

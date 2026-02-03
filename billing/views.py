@@ -18,8 +18,10 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from .models import Customer, InvoiceItem, Invoice, Staff
 from django.core.exceptions import ValidationError
+from django.utils.timezone import now
 import logging
 import traceback
+
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +79,7 @@ def search_medicine(request):
             medicine=OuterRef("medicine"),
             is_active=True,
             current_quantity__gt=0,
+            expiration_date__gte=now().date(),
         )
         .values("medicine")
         .annotate(min_expiry=Min("expiration_date"))
@@ -88,6 +91,7 @@ def search_medicine(request):
             Q(medicine__name__icontains=query) | Q(medicine__barcode__icontains=query),
             is_active=True,
             current_quantity__gt=0,
+            expiration_date__gte=now().date(),
         )
         .select_related("medicine")
         .annotate(

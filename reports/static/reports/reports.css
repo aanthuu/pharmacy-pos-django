@@ -1,0 +1,180 @@
+/* static/reports/reports.css */
+
+/* --- GLOBAL LAYOUT --- */
+.report-wrapper {
+    padding: 24px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f3f4f6;
+    color: #111827;
+    min-height: 100vh;
+}
+
+/* --- HEADER --- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.header-content h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+.header-content p {
+    margin: 4px 0 0 0;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+/* "Print Report" Button */
+.btn-export {
+    background: white;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+    padding: 8px 14px; /* Slightly more compact */
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.btn-export:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+/* --- KPI CARDS (Now perfectly matching Billing Summary Scale) --- */
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px; /* Tighter gap */
+    margin-bottom: 24px;
+}
+@media (max-width: 1024px) { .kpi-row { grid-template-columns: 1fr; } }
+
+.kpi-card {
+    background: white;
+    padding: 20px; /* Reduced from 24px to match Billing Panel */
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    transition: transform 0.2s;
+}
+.kpi-card:hover { transform: translateY(-1px); border-color: #cbd5e1; }
+
+/* Smaller Icon Box */
+.kpi-icon-box {
+    width: 42px; /* Reduced from 50px */
+    height: 42px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.bg-blue { background: #eff6ff; color: #2563eb; }
+.bg-purple { background: #f5f3ff; color: #7c3aed; }
+.bg-orange { background: #fff7ed; color: #ea580c; }
+
+/* Text Content */
+.kpi-info { display: flex; flex-direction: column; }
+
+/* Label -> Matches "Subtotal" / "GST" label style */
+.kpi-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+/* Value -> Matches "Total" price style (approx 20px) */
+.kpi-val {
+    font-size: 1.25rem; /* Reduced from 1.5rem to match Billing Total */
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.kpi-sub {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+
+/* --- INSIGHT BANNER --- */
+.insight-banner {
+    background: white;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #2563eb;
+    border-radius: 8px;
+    padding: 16px 20px; /* More compact */
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column; /* Stacked for cleaner look on small screens */
+    gap: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.insight-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #2563eb;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.insight-banner p {
+    font-size: 0.95rem; /* Slightly smaller text */
+    color: #334155;
+    margin: 0;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+
+/* --- CHARTS GRID --- */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px; /* Tighter gap */
+}
+@media (max-width: 1024px) { .charts-grid { grid-template-columns: 1fr; } }
+
+.chart-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.chart-card h3 {
+    margin: 0 0 16px 0;
+    font-size: 1rem;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.chart-container {
+    position: relative;
+    height: 280px; /* Slightly shorter to feel more compact */
+    width: 100%;
+}

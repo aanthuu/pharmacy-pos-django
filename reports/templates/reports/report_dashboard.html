@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Analytics | PharmaFlow{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'reports/reports.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="report-wrapper">
+
+    <div class="page-header">
+        <div class="header-content">
+            <h1>Business Analytics</h1>
+            <p>Performance insights for your pharmacy</p>
+        </div>
+        <button class="btn-export" onclick="window.print()">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            Print Report
+        </button>
+    </div>
+
+    <div class="kpi-row">
+        <div class="kpi-card">
+            <div class="kpi-icon-box bg-blue">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <div class="kpi-info">
+                <span class="kpi-label">Gross Revenue</span>
+                <div class="kpi-val">₹{{ total_revenue|floatformat:2 }}</div>
+                <span class="kpi-sub">Last 30 Days</span>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon-box bg-purple">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"></path></svg>
+            </div>
+            <div class="kpi-info">
+                <span class="kpi-label">Tax Liability</span>
+                <div class="kpi-val">₹{{ tax_liability|floatformat:2 }}</div>
+                <span class="kpi-sub">Est. GST Amount</span>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon-box bg-orange">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+            </div>
+            <div class="kpi-info">
+                <span class="kpi-label">Avg Order Value</span>
+                <div class="kpi-val">₹{{ avg_order_value|floatformat:2 }}</div>
+                <span class="kpi-sub">Per Invoice</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="insight-banner">
+        <div class="insight-content">
+            <div class="insight-title">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                AI Performance Insight
+            </div>
+            <p>"Antibiotics sales are trending up 20% this week. Consider increasing stock for Amoxicillin based on current depletion rates."</p>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>Revenue Trend</h3>
+            <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h3>Top Categories</h3>
+            <div class="chart-container">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // 1. Revenue Line Chart
+    const ctxRev = document.getElementById('revenueChart').getContext('2d');
+    new Chart(ctxRev, {
+        type: 'line',
+        data: {
+            labels: {{ chart_dates|safe }},
+            datasets: [{
+                label: 'Revenue',
+                data: {{ chart_values|safe }},
+                borderColor: '#2563eb', // Brand Blue
+                backgroundColor: (context) => {
+                    const ctx = context.chart.ctx;
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                    gradient.addColorStop(0, "rgba(37, 99, 235, 0.2)");
+                    gradient.addColorStop(1, "rgba(37, 99, 235, 0)");
+                    return gradient;
+                },
+                borderWidth: 2,
+                tension: 0.3, // Smoother curve
+                fill: true,
+                pointRadius: 0,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { 
+                    beginAtZero: true,
+                    grid: { borderDash: [4, 4], color: '#f1f5f9' }, 
+                    ticks: { callback: v => '₹' + v, font: {size: 11} } 
+                },
+                x: { 
+                    grid: { display: false },
+                    ticks: { font: {size: 11} }
+                }
+            }
+        }
+    });
+
+    // 2. Category Doughnut Chart
+    const ctxCat = document.getElementById('categoryChart').getContext('2d');
+    new Chart(ctxCat, {
+        type: 'doughnut',
+        data: {
+            labels: {{ cat_labels|safe }},
+            datasets: [{
+                data: {{ cat_values|safe }},
+                backgroundColor: ['#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#dbeafe'], // Blue shades
+                borderWidth: 0,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { 
+                legend: { position: 'right', labels: { boxWidth: 12, usePointStyle: true, font: {size: 11} } } 
+            },
+            cutout: '75%'
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,51 @@
+<div class="table-container" id="inventory-table-area">
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 25%;">Medicine</th>
+                <th>Batch No</th>
+                <th>Supplier</th>
+                <th>Expiry Date</th>
+                <th>Stock</th>
+                <th>MRP</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>
+                    <div class="medicine-info">
+                        <span class="med-name">{{ item.medicine.name }}</span>
+                        <span class="med-generic">{{ item.medicine.brand.name|default:"Generic" }}</span>
+                    </div>
+                </td>
+                <td style="font-family: monospace; font-weight: 600; color: #4b5563;">{{ item.batch_number }}</td>
+                <td style="font-size: 0.85rem;">{{ item.supplier.name }}</td>
+                <td>
+                    {% if item.is_expired %}
+                        <span class="expiry-badge expired">
+                            {{ item.expiration_date|date:"d M Y" }}
+                        </span>
+                    {% else %}
+                        <span style="color: #374151;">{{ item.expiration_date|date:"d M Y" }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.current_quantity <= 10 %}
+                        <strong style="color: #dc2626;">{{ item.current_quantity }}</strong>
+                    {% else %}
+                        <strong style="color: #0f172a;">{{ item.current_quantity }}</strong>
+                    {% endif %}
+                </td>
+                <td>₹{{ item.sale_price }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 30px; color: #64748b;">
+                    No batch records found.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

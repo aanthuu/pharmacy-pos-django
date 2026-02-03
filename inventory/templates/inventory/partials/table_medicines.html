@@ -1,0 +1,53 @@
+<div class="table-container" id="inventory-table-area">
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 30%;">Medicine Details</th>
+                <th>Category</th>
+                <th>Pack</th>
+                <th>Total Stock</th>
+                <th>Status</th>
+                <th style="text-align: right;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>
+                    <div class="medicine-info">
+                        <span class="med-name">{{ item.name }} {{ item.strength|default:"" }}</span>
+                        <span class="med-generic">{{ item.brand.name|default:"Generic" }}</span>
+                    </div>
+                </td>
+                <td><span class="category-badge">{{ item.category.name|default:"General" }}</span></td>
+                <td style="font-size: 0.85rem;">{{ item.pack_size }} {{ item.pack_type.name }}</td>
+                <td>
+                    {% if item.total_stock > 50 %}
+                        <div class="stock-info stock-high">{{ item.total_stock|default:"0" }} Units</div>
+                    {% elif item.total_stock > 0 %}
+                        <div class="stock-info stock-med">{{ item.total_stock|default:"0" }} Units</div>
+                    {% else %}
+                        <div class="stock-info stock-low">Out of Stock</div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.is_active %}
+                        <span class="status-badge status-active"><div class="dot"></div> Active</span>
+                    {% else %}
+                        <span class="status-badge status-inactive"><div class="dot"></div> Inactive</span>
+                    {% endif %}
+                </td>
+                <td style="text-align: right;">
+                    <a href="#" class="action-btn">Edit</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 30px; color: #64748b;">
+                    No medicines found.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

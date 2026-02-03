@@ -1,0 +1,224 @@
+/* static/customers/customers.css */
+
+/* --- GLOBAL LAYOUT --- */
+.customer-wrapper {
+    padding: 24px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f3f4f6; /* Exact match to Billing Page background */
+    color: #111827;
+    min-height: 100vh;
+}
+
+/* --- HEADER --- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+.header-content h1 {
+    font-size: 1.5rem; /* Matches POS Header */
+    font-weight: 700;
+    color: #0f172a; /* Navy Blue like 'PharmaFlow Billing System' */
+    margin: 0;
+}
+.header-content p {
+    margin: 4px 0 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* "Add Customer" -> Matches "Process Checkout" Button */
+.btn-primary {
+    background-color: #0f172a; 
+    color: white;
+    padding: 10px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.btn-primary:hover { background-color: #1e293b; }
+
+/* --- SEARCH BAR --- */
+/* Matches "Search medicine name or barcode..." input */
+.search-container {
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.search-box { position: relative; width: 100%; max-width: 100%; }
+
+.search-icon {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: #94a3b8; width: 18px; height: 18px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px 12px 40px; /* Space for icon */
+    border: 1px solid #cbd5e1; /* Slightly darker border for contrast */
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: #334155;
+    outline: none;
+    transition: all 0.2s;
+}
+.search-input::placeholder { color: #94a3b8; }
+.search-input:focus { 
+    border-color: #0f172a; /* Navy focus border */
+    box-shadow: 0 0 0 1px #0f172a; 
+}
+
+/* --- CUSTOMER GRID --- */
+.customer-grid {
+    display: grid;
+    /* Auto-fit columns: Min width 300px */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* --- CARD DESIGN (Matches 'Billing Summary' Panel) --- */
+.customer-card {
+    background: white;
+    border-radius: 8px; /* Sharper corners like POS */
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.customer-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+}
+
+/* Top Section: Avatar + Badge */
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Avatar: Uses Brand Blue */
+.avatar {
+    width: 42px;
+    height: 42px;
+    background-color: #eff6ff; /* Very light blue bg */
+    color: #2563eb; /* Brand Blue text */
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dbeafe;
+}
+
+.points-badge {
+    background-color: #fffbeb;
+    color: #b45309;
+    padding: 4px 10px;
+    border-radius: 4px; /* Less rounded, more like tags */
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid #fef3c7;
+}
+
+/* Info Section */
+.card-info h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0f172a; /* Navy text */
+}
+.contact-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b; /* Muted gray */
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+/* Stats Section (Matches 'Billing Summary' text styles) */
+.stats-row {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px dashed #e2e8f0;
+    margin-top: auto;
+}
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+.stat-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+}
+.stat-val {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #334155;
+}
+/* Lifetime Value looks like 'Total' price */
+.lifetime-val {
+    color: #0f172a; /* Navy */
+    font-size: 1.1rem;
+}
+
+/* Button (Matches POS Action Buttons) */
+.view-history-btn {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px;
+    background-color: white;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.view-history-btn:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: #64748b;
+    background: white;
+    border-radius: 8px;
+    border: 1px dashed #cbd5e1;
+}
